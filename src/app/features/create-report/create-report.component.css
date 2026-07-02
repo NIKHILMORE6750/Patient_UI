@@ -1,0 +1,15 @@
+.page { max-width: 820px; margin: 0 auto; padding: 2.5rem clamp(1rem,4vw,3rem); }
+.page-head { margin-bottom: 1.5rem; }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.72rem; color: var(--accent); margin: 0 0 0.4rem; }
+h1 { font-family: var(--font-display); font-size: 2rem; letter-spacing: -0.025em; margin: 0; }
+.report-form { display: flex; flex-direction: column; gap: 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.75rem; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field span { font-size: 0.8rem; font-weight: 500; color: var(--ink-soft); }
+.field input, .field select, .field textarea { padding: 0.7rem 0.85rem; border: 1px solid var(--line); border-radius: 9px; font-size: 0.9rem; background: var(--surface); color: var(--ink); font-family: inherit; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.btn-primary { padding: 0.85rem; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.95rem; }
+.btn-primary:hover:not(:disabled) { background: var(--accent-strong); } .btn-primary:disabled { opacity: 0.55; }
+.toast { background: var(--accent-soft); color: var(--accent-strong); padding: 0.8rem 1rem; border-radius: 9px; margin-bottom: 1rem; font-size: 0.9rem; }
+.error { background: var(--danger-soft); color: var(--danger); padding: 0.8rem 1rem; border-radius: 9px; margin-bottom: 1rem; font-size: 0.9rem; }
+@media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }

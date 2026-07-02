@@ -1,0 +1,120 @@
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Meridian Hospital</p>
+    <h1>Compassionate care, <span class="hl">modern medicine</span>.</h1>
+    <p class="lede">Book trusted doctors, manage your records, and reach emergency help — all in one place.</p>
+    <div class="hero-cta">
+      @if (auth.isAuthenticated()) {
+        <a routerLink="/doctors" class="btn-primary">Find a doctor</a>
+      } @else {
+        <a routerLink="/register" class="btn-primary">Register now</a>
+        <a routerLink="/login" class="btn-ghost">Sign in</a>
+      }
+    </div>
+    @if (languages().length) {
+      <p class="langs">Assistance in
+        @for (l of languages(); track l; let last = $last) {<strong>{{ l }}</strong>{{ last ? '' : ', ' }}}.
+      </p>
+    }
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <!-- Illustration: clinician with monitoring equipment, smiling patient -->
+    <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="400" height="320" rx="18" fill="var(--accent-soft)"/>
+      <rect x="40" y="60" width="120" height="180" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+      <line x1="60" y1="90" x2="140" y2="90" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+      <polyline points="60,150 80,150 90,125 105,170 120,150 140,150" fill="none" stroke="var(--accent-strong)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="100" cy="205" r="14" fill="var(--accent)"/>
+      <path d="M93 205 h14 M100 198 v14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- clinician -->
+      <circle cx="250" cy="120" r="26" fill="var(--accent-strong)"/>
+      <rect x="222" y="150" width="56" height="80" rx="14" fill="var(--accent)"/>
+      <rect x="244" y="150" width="12" height="60" fill="var(--surface)" opacity="0.6"/>
+      <!-- patient, happy -->
+      <circle cx="330" cy="180" r="22" fill="#f5b787"/>
+      <path d="M321 182 q9 9 18 0" stroke="#7a3e12" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="324" cy="174" r="2.2" fill="#7a3e12"/><circle cx="336" cy="174" r="2.2" fill="#7a3e12"/>
+      <rect x="306" y="205" width="48" height="70" rx="14" fill="#7cc6bb"/>
+    </svg>
+  </div>
+</section>
+
+<!-- DEPARTMENTS -->
+<section class="block">
+  <div class="block-head"><h2>Departments</h2><a routerLink="/departments" class="more">All departments →</a></div>
+  <div class="dept-grid">
+    @for (d of departments().slice(0, 6); track d.name) {
+      <article class="dept-card"><h3>{{ d.name }}</h3><p>{{ d.description }}</p></article>
+    }
+  </div>
+</section>
+
+<!-- NEWS -->
+<section class="block alt">
+  <div class="block-head"><h2>Latest news</h2><a routerLink="/news" class="more">All news →</a></div>
+  <div class="news-grid">
+    @for (n of news(); track n.title) {
+      <article class="news-card">
+        <p class="news-date">{{ n.date }}</p>
+        <h3>{{ n.title }}</h3>
+        <p class="news-sum">{{ n.summary }}</p>
+      </article>
+    }
+  </div>
+</section>
+
+<!-- STORIES -->
+@if (stories().length) {
+  <section class="block">
+    <div class="block-head"><h2>Patient stories</h2><a routerLink="/feedback" class="more">Share yours →</a></div>
+    <div class="story-grid">
+      @for (s of stories(); track s.id) {
+        <article class="story-card">
+          <span class="stars">{{ starString(s.rating) }}</span>
+          <p class="story-msg">"{{ s.message || 'Great experience.' }}"</p>
+          <p class="story-who">— {{ s.patientName }}</p>
+        </article>
+      }
+    </div>
+  </section>
+}
+
+<!-- FAQ -->
+<section class="block alt">
+  <div class="block-head"><h2>Frequently asked questions</h2></div>
+  <div class="faq-list">
+    @for (f of faqs(); track f.q; let i = $index) {
+      <div class="faq-item" [class.open]="openFaq() === i">
+        <button class="faq-q" (click)="toggleFaq(i)">{{ f.q }}<span>{{ openFaq() === i ? '−' : '+' }}</span></button>
+        @if (openFaq() === i) { <p class="faq-a">{{ f.a }}</p> }
+      </div>
+    }
+  </div>
+</section>
+
+<!-- CONTACT + APP -->
+<section class="block contact-block">
+  @if (contact(); as c) {
+    <div class="contact-card">
+      <h2>Emergency &amp; contact</h2>
+      <div class="contact-grid">
+        <div><span class="cl">Emergency</span><a href="tel:{{c.emergency}}">{{ c.emergency }}</a></div>
+        <div><span class="cl">Ambulance</span><a href="tel:{{c.ambulance}}">{{ c.ambulance }}</a></div>
+        <div><span class="cl">Blood bank</span><a href="tel:{{c.bloodBank}}">{{ c.bloodBank }}</a></div>
+        <div><span class="cl">Board line</span><a href="tel:{{c.boardLine}}">{{ c.boardLine }}</a></div>
+        <div class="span"><span class="cl">Email</span><a href="mailto:{{c.hospitalEmail}}">{{ c.hospitalEmail }}</a></div>
+        <div class="span"><span class="cl">Address</span><span>{{ c.address }}</span></div>
+      </div>
+    </div>
+  }
+  <div class="app-card">
+    <h2>Get the patient app</h2>
+    <p>Manage appointments and records on the go.</p>
+    <div class="app-links">
+      <a class="store" href="#" (click)="$event.preventDefault()">⬇ Android (APK)</a>
+      <a class="store" href="#" (click)="$event.preventDefault()">⬇ iOS (TestFlight)</a>
+    </div>
+    <p class="app-note">Demo links — connect to your real builds when published.</p>
+  </div>
+</section>

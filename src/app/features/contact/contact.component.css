@@ -1,0 +1,11 @@
+.page { max-width: 860px; margin: 0 auto; padding: 2.5rem clamp(1rem,4vw,3rem); }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.72rem; color: var(--accent); margin: 0 0 0.4rem; }
+h1 { font-family: var(--font-display); font-size: 2rem; letter-spacing: -0.025em; margin: 0 0 1.5rem; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1.5rem; }
+.card.urgent { border-color: var(--accent); background: var(--accent-soft); }
+.card.span { grid-column: 1 / -1; }
+.cl { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); margin-bottom: 0.4rem; }
+.card a { color: var(--accent-strong); text-decoration: none; font-size: 1.3rem; font-weight: 600; }
+.card.span a { font-size: 1rem; } .addr { font-size: 1rem; } .muted { color: var(--ink-soft); }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }

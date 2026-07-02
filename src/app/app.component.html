@@ -1,0 +1,76 @@
+<nav class="topnav">
+  <div class="nav-inner">
+    <a routerLink="/home" class="brand">
+      <span class="brand-mark">+</span>
+      <span class="brand-name">Meridian</span>
+    </a>
+
+    <div class="nav-links">
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a routerLink="/departments" routerLinkActive="active">Departments</a>
+      <a routerLink="/about" routerLinkActive="active">About</a>
+      <a routerLink="/news" routerLinkActive="active">News</a>
+      <a routerLink="/faq" routerLinkActive="active">FAQ</a>
+      <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      @if (!auth.isDoctor() && !onAuthPage()) {
+        <a routerLink="/feedback" routerLinkActive="active">Feedback</a>
+      }
+
+      @if (auth.isAuthenticated()) {
+        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <a routerLink="/doctors" routerLinkActive="active">Doctors</a>
+        @if (auth.isAdmin()) {
+          <a routerLink="/patients" routerLinkActive="active">Patients</a>
+        }
+        <a routerLink="/appointments" routerLinkActive="active">Appointments</a>
+        @if (auth.isDoctor()) {
+          <a routerLink="/create-report" routerLinkActive="active">Create Report</a>
+        }
+        @if (auth.isPatient()) {
+          <a routerLink="/my-reports" routerLinkActive="active">My Reports</a>
+        }
+      }
+    </div>
+
+    <div class="nav-right">
+      <button class="icon-btn" (click)="theme.toggle()" [title]="theme.theme() === 'dark' ? 'Light mode' : 'Dark mode'">
+        {{ theme.theme() === 'dark' ? '☀' : '🌙' }}
+      </button>
+      @if (auth.isAuthenticated()) {
+        <span class="role-tag">{{ auth.role() }}</span>
+        <button class="logout" (click)="logout()">Sign out</button>
+      } @else {
+        <a routerLink="/login" class="signin">Sign in</a>
+      }
+    </div>
+  </div>
+</nav>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Scroll to top -->
+@if (showScrollTop()) {
+  <button class="scroll-top" (click)="scrollTop()" title="Back to top">↑</button>
+}
+
+<!-- Chatbot -->
+<div class="chat-fab" (click)="chatOpen.set(!chatOpen())" title="Help">💬</div>
+@if (chatOpen()) {
+  <div class="chat-panel">
+    <div class="chat-head">
+      <span>Meridian Assistant</span>
+      <button (click)="chatOpen.set(false)">×</button>
+    </div>
+    <div class="chat-body">
+      @for (m of chat(); track $index) {
+        <div class="msg" [class.bot]="m.from === 'bot'" [class.user]="m.from === 'user'">{{ m.text }}</div>
+      }
+    </div>
+    <form class="chat-input" (ngSubmit)="sendChat()">
+      <input [(ngModel)]="chatInput" name="chat" placeholder="Ask a question…" autocomplete="off" />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+}

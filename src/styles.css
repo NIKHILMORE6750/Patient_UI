@@ -1,0 +1,62 @@
+:root {
+  /* Palette — clinical but warm: deep slate ink, a considered teal accent */
+  --accent: #0d9488;
+  --accent-strong: #0b7d73;
+  --accent-light: #5eead4;
+  --accent-soft: #e6f4f1;
+  --ink: #16201f;
+  --ink-soft: #5c6664;
+  --ink-faint: #98a09e;
+  --surface: #ffffff;
+  --surface-2: #f7f8f7;
+  --line: #e7e9e8;
+  --danger: #c0392b;
+  --danger-soft: #fcebe9;
+
+  /* Solid accent panels (stat cards, login aside) — readable in both themes */
+  --feature-bg: #0d9488;
+  --feature-text: #ffffff;
+  --feature-muted: rgba(255, 255, 255, 0.78);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+[data-theme="dark"] {
+  --accent: #2dd4bf;
+  --accent-strong: #5eead4;
+  --accent-light: #99f6e4;
+  --accent-soft: #14302c;
+  --ink: #e8eceb;
+  --ink-soft: #9aa3a1;
+  --ink-faint: #6b7472;
+  --surface: #1a2120;
+  --surface-2: #131817;
+  --line: #2a3331;
+  --danger: #f87171;
+  --danger-soft: #3a1f1d;
+
+  --feature-bg: #0f3d38;
+  --feature-text: #e8fbf7;
+  --feature-muted: rgba(232, 251, 247, 0.72);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--surface-2);
+  transition: background 0.2s ease, color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: inherit; }
+
+::selection { background: var(--accent-light); color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

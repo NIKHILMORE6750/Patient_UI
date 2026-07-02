@@ -1,0 +1,11 @@
+<section class="page">
+  <header><p class="eyebrow">Answers</p><h1>Frequently asked questions</h1></header>
+  <div class="list">
+    @for (f of items(); track f.q; let i = $index) {
+      <div class="item" [class.open]="open() === i">
+        <button class="q" (click)="toggle(i)">{{ f.q }}<span>{{ open() === i ? '−' : '+' }}</span></button>
+        @if (open() === i) { <p class="a">{{ f.a }}</p> }
+      </div>
+    }
+  </div>
+</section>

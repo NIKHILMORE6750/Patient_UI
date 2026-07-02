@@ -1,0 +1,164 @@
+<section class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Care team</p>
+      <h1>Doctors</h1>
+    </div>
+    @if (auth.isAdmin()) {
+      <div class="head-actions">
+        <button class="btn-primary" (click)="openAdd()">+ Add doctor</button>
+        <button class="btn-ghost" (click)="exportExcel()">Download Excel</button>
+        <label class="btn-ghost file-btn">
+          {{ importing() ? 'Importing…' : 'Upload Excel' }}
+          <input type="file" accept=".xlsx" (change)="onImportFile($event)" hidden />
+        </label>
+      </div>
+    }
+  </header>
+
+  <div class="toolbar">
+    <input class="search" type="search" placeholder="Search by name, speciality, department"
+           [ngModel]="search()" (ngModelChange)="search.set($event)" />
+    <span class="count">{{ filtered().length }} shown</span>
+  </div>
+
+  @if (toast()) { <div class="toast">{{ toast() }}</div> }
+
+  @if (loading()) {
+    <p class="muted">Loading doctors…</p>
+  } @else if (filtered().length === 0) {
+    <div class="empty"><p>No doctors found.</p>
+      @if (auth.isAdmin()) { <button class="btn-ghost" (click)="openAdd()">Add the first doctor</button> }
+    </div>
+  } @else {
+    <div class="doc-grid">
+      @for (d of filtered(); track d.id) {
+        <article class="doc-card">
+          <div class="doc-top">
+            <span class="avatar">{{ d.name.charAt(0) }}</span>
+            <div>
+              <h3>{{ d.name }}</h3>
+              <p class="spec">{{ d.speciality }}</p>
+            </div>
+            @if (d.homeService) { <span class="badge">Home service</span> }
+          </div>
+          <dl class="doc-meta">
+            <div><dt>Qualification</dt><dd>{{ d.qualification }}</dd></div>
+            <div><dt>Department</dt><dd>{{ d.department || '—' }}</dd></div>
+            <div><dt>Available</dt><dd>{{ d.availability || '—' }}</dd></div>
+            <div><dt>Contact</dt><dd>{{ d.contact }}</dd></div>
+          </dl>
+
+          <div class="reviews">
+            <div class="rev-summary">
+              @if (reviewsFor(d.id).length) {
+                <span class="stars">{{ starString(avgRating(d.id)) }}</span>
+                <span class="rev-count">{{ avgRating(d.id) }} ({{ reviewsFor(d.id).length }} review{{ reviewsFor(d.id).length === 1 ? '' : 's' }})</span>
+              } @else {
+                <span class="rev-count muted">No reviews yet</span>
+              }
+              <button class="link-btn" (click)="openReview(d.id)">
+                {{ reviewOpen() === d.id ? 'Close' : 'Write a review' }}
+              </button>
+            </div>
+
+            @if (reviewsFor(d.id).length) {
+              <ul class="rev-list">
+                @for (r of reviewsFor(d.id); track r.id) {
+                  <li>
+                    <div class="rev-head">
+                      <span class="rev-who">{{ r.reviewerName }}</span>
+                      <span class="stars sm">{{ starString(r.rating) }}</span>
+                    </div>
+                    @if (r.comment) { <p class="rev-comment">{{ r.comment }}</p> }
+                  </li>
+                }
+              </ul>
+            }
+
+            @if (reviewOpen() === d.id) {
+              <form class="rev-form" (ngSubmit)="submitReview(d.id)">
+                <input name="rn" [(ngModel)]="reviewerName" placeholder="Your name" />
+                <div class="rating">
+                  @for (s of reviewStars; track s) {
+                    <button type="button" class="star" [class.on]="s <= reviewRating" (click)="reviewRating = s">★</button>
+                  }
+                </div>
+                <textarea name="rc" [(ngModel)]="reviewComment" rows="2" placeholder="Share your experience"></textarea>
+                <button type="submit" class="btn-primary sm">Submit review</button>
+              </form>
+            }
+          </div>
+
+          <div class="doc-actions">
+            @if (auth.isPatient() || auth.isAdmin()) {
+              <button class="btn-primary sm" (click)="openBook(d)">Book</button>
+            }
+            @if (auth.isAdmin()) {
+              <button class="link-btn" (click)="openEdit(d)">Edit</button>
+              <button class="link-btn danger" (click)="removeDoctor(d)">Remove</button>
+            }
+            @if (isOwnProfile(d)) {
+              <button class="link-btn" (click)="openEdit(d)">Edit my profile</button>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
+
+<!-- Add/Edit doctor modal -->
+@if (editOpen()) {
+  <div class="modal-backdrop" (click)="editOpen.set(false)">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h2>{{ editingId() ? 'Edit doctor' : 'Add doctor' }}</h2>
+      <form (ngSubmit)="saveDoctor()" #df="ngForm" class="form grid2">
+        <label class="field"><span>Name</span><input name="n" [(ngModel)]="form.name" required /></label>
+        <label class="field"><span>Email</span><input name="e" type="email" [(ngModel)]="form.email" required /></label>
+        <label class="field"><span>Speciality</span><input name="s" [(ngModel)]="form.speciality" required /></label>
+        <label class="field"><span>Qualification</span><input name="q" [(ngModel)]="form.qualification" required /></label>
+        <label class="field"><span>Contact</span><input name="c" [(ngModel)]="form.contact" required /></label>
+        <label class="field"><span>Department</span><input name="dep" [(ngModel)]="form.department" /></label>
+        <label class="field"><span>Country</span><input name="co" [(ngModel)]="form.country" required /></label>
+        <label class="field"><span>Address</span><input name="a" [(ngModel)]="form.address" required /></label>
+        <label class="field"><span>Availability</span><input name="av" [(ngModel)]="form.availability" placeholder="Mon-Fri 9:00-13:00" /></label>
+        <label class="check"><input type="checkbox" name="hs" [(ngModel)]="form.homeService" /> Offers home service</label>
+        <div class="modal-actions span2">
+          <button type="button" class="btn-ghost" (click)="editOpen.set(false)">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="saving() || df.invalid">
+            {{ saving() ? 'Saving…' : 'Save' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- Booking modal -->
+@if (bookOpen()) {
+  <div class="modal-backdrop" (click)="bookOpen.set(false)">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h2>Book with Dr. {{ bookDoctor()?.name }}</h2>
+      <p class="muted small">Available: {{ bookDoctor()?.availability || 'by appointment' }}</p>
+      <form (ngSubmit)="confirmBook()" #bf="ngForm" class="form">
+        <label class="field">
+          <span>Patient</span>
+          <select name="p" [(ngModel)]="bookPatientId" required>
+            @for (p of patients(); track p.id) { <option [value]="p.id">{{ p.name }}</option> }
+          </select>
+        </label>
+        <label class="field"><span>Date &amp; time</span>
+          <input name="t" type="datetime-local" [(ngModel)]="bookTime" required /></label>
+        <label class="field"><span>Reason</span>
+          <input name="r" [(ngModel)]="bookReason" placeholder="Reason for visit" /></label>
+        <div class="modal-actions">
+          <button type="button" class="btn-ghost" (click)="bookOpen.set(false)">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="booking() || bf.invalid">
+            {{ booking() ? 'Booking…' : 'Confirm booking' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

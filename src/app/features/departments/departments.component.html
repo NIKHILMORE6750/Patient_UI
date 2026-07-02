@@ -1,0 +1,47 @@
+<section class="page">
+  <header><p class="eyebrow">Specialised care</p><h1>Departments</h1>
+    <p class="lede">Click a department to see details, bed availability, and its doctors.</p>
+  </header>
+  <div class="grid">
+    @for (d of items(); track d.name) {
+      <article class="card" [class.active]="selected()?.name === d.name" (click)="open(d)">
+        <h3>{{ d.name }}</h3>
+        <p>{{ d.description }}</p>
+        <span class="more">{{ selected()?.name === d.name ? 'Hide details ▲' : 'View details ▼' }}</span>
+      </article>
+    }
+  </div>
+
+  @if (selected(); as d) {
+    <div class="detail">
+      <h2>{{ d.name }}</h2>
+      <p class="detail-desc">{{ d.description }}</p>
+
+      <h4>Bed availability</h4>
+      @if (bedsFor(d.name).length) {
+        <table class="bed-table">
+          <thead><tr><th>Branch</th><th class="right">Beds</th></tr></thead>
+          <tbody>
+            @for (row of bedsFor(d.name); track row.branch) {
+              <tr><td>{{ row.branch }}</td><td class="right">{{ row.beds }}</td></tr>
+            }
+            <tr class="total-row"><td>Total</td><td class="right">{{ totalBeds(d.name) }}</td></tr>
+          </tbody>
+        </table>
+      } @else {
+        <p class="muted">Bed data not listed for this department.</p>
+      }
+
+      <h4>Doctors in {{ d.name }}</h4>
+      @if (doctorsFor(d.name).length) {
+        <ul class="doc-list">
+          @for (doc of doctorsFor(d.name); track doc.id) {
+            <li><strong>{{ doc.name }}</strong> — {{ doc.speciality }} <span class="muted">({{ doc.qualification }})</span></li>
+          }
+        </ul>
+      } @else {
+        <p class="muted">No doctors listed in this department yet.</p>
+      }
+    </div>
+  }
+</section>

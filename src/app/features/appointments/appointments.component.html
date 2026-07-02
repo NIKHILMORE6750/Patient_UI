@@ -1,0 +1,38 @@
+<section class="page">
+  <header class="page-head">
+    <div><p class="eyebrow">Schedule</p><h1>Appointments</h1></div>
+  </header>
+
+  @if (loading()) {
+    <p class="muted">Loading appointments…</p>
+  } @else if (appointments().length === 0) {
+    <div class="empty"><p>No appointments yet. Patients can book one from the Doctors page.</p></div>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Patient</th><th>Doctor</th><th>When</th><th>Reason</th><th>Status</th><th class="right">Actions</th></tr>
+        </thead>
+        <tbody>
+          @for (a of appointments(); track a.id) {
+            <tr>
+              <td>{{ a.patientName }}</td>
+              <td>{{ a.doctorName }}</td>
+              <td>{{ a.appointmentTime | date:'medium' }}</td>
+              <td class="muted-cell">{{ a.reason || '—' }}</td>
+              <td><span [class]="statusClass(a.status)">{{ a.status }}</span></td>
+              <td class="right">
+                @if (a.status === 'SCHEDULED') {
+                  @if (auth.isDoctor() || auth.isAdmin()) {
+                    <button class="link-btn" (click)="complete(a)">Mark done</button>
+                  }
+                  <button class="link-btn danger" (click)="cancel(a)">Cancel</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

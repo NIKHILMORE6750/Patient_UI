@@ -1,0 +1,45 @@
+<div class="auth-shell">
+  <div class="auth-panel">
+    <div class="brand">
+      <span class="brand-mark">+</span>
+      <span class="brand-name">Meridian</span>
+    </div>
+    <h1>Welcome back</h1>
+    <p class="lede">Sign in to the hospital portal.</p>
+
+    <div class="demo-row">
+      <span class="demo-label">Demo login:</span>
+      @for (d of demos; track d.label) {
+        <button type="button" class="demo-chip" (click)="fill(d.email)">{{ d.label }}</button>
+      }
+    </div>
+
+    <form (ngSubmit)="submit()" #f="ngForm" class="form">
+      <label class="field">
+        <span>Email</span>
+        <input type="email" name="email" [(ngModel)]="email" required
+               autocomplete="username" placeholder="you@clinic.org" />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" name="password" [(ngModel)]="password" required
+               autocomplete="current-password" placeholder="••••••••" />
+      </label>
+
+      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+
+      <button type="submit" class="btn-primary" [disabled]="loading() || f.invalid">
+        {{ loading() ? 'Signing in…' : 'Sign in' }}
+      </button>
+    </form>
+
+    <p class="hint">New patient or doctor? <a routerLink="/register">Create an account</a></p>
+  </div>
+
+  <aside class="auth-aside">
+    <div class="aside-inner">
+      <p class="aside-eyebrow">Secure by design</p>
+      <p class="aside-quote">Every request passes through the gateway and is verified against a signed token before any record is read or changed.</p>
+    </div>
+  </aside>
+</div>

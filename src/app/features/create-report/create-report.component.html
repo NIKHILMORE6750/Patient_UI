@@ -1,0 +1,52 @@
+<section class="page">
+  <header class="page-head">
+    <div><p class="eyebrow">Clinical</p><h1>Create patient report</h1></div>
+  </header>
+
+  @if (done()) { <div class="toast">Report saved. The patient can now view and download it.</div> }
+  @if (error()) { <div class="error">{{ error() }}</div> }
+
+  <form (ngSubmit)="submit()" #rf="ngForm" class="report-form">
+    <div class="grid2">
+      <label class="field">
+        <span>Patient *</span>
+        <select name="patientId" [(ngModel)]="form.patientId" required>
+          <option value="" disabled>Select a patient</option>
+          @for (p of patients(); track p.id) { <option [value]="p.id">{{ p.name }}</option> }
+        </select>
+      </label>
+      <label class="field"><span>Attending physician</span>
+        <input name="doctorName" [(ngModel)]="form.doctorName" /></label>
+      <label class="field"><span>Department</span>
+        <input name="department" [(ngModel)]="form.department" placeholder="e.g. Cardiology" /></label>
+      <label class="field"><span>Visit type</span>
+        <select name="visitType" [(ngModel)]="form.visitType">
+          <option value="OPD">OPD</option>
+          <option value="IPD">IPD</option>
+          <option value="Emergency">Emergency</option>
+          <option value="Follow-up">Follow-up</option>
+        </select>
+      </label>
+    </div>
+
+    <label class="field"><span>Chief complaint</span>
+      <textarea name="chiefComplaint" [(ngModel)]="form.chiefComplaint" rows="2"></textarea></label>
+    <label class="field"><span>History of present illness</span>
+      <textarea name="historyOfIllness" [(ngModel)]="form.historyOfIllness" rows="3"></textarea></label>
+    <label class="field"><span>Examination findings</span>
+      <textarea name="examinationFindings" [(ngModel)]="form.examinationFindings" rows="3"></textarea></label>
+    <label class="field"><span>Diagnosis</span>
+      <textarea name="diagnosis" [(ngModel)]="form.diagnosis" rows="2"></textarea></label>
+    <label class="field"><span>Medications prescribed</span>
+      <textarea name="medications" [(ngModel)]="form.medications" rows="3"
+        placeholder="One per line: Medicine — dosage — frequency — duration"></textarea></label>
+    <label class="field"><span>Treatment plan &amp; advice</span>
+      <textarea name="treatmentPlan" [(ngModel)]="form.treatmentPlan" rows="3"></textarea></label>
+    <label class="field"><span>Follow-up</span>
+      <input name="followUp" [(ngModel)]="form.followUp" placeholder="e.g. Review after 2 weeks" /></label>
+
+    <button type="submit" class="btn-primary" [disabled]="saving() || rf.invalid">
+      {{ saving() ? 'Saving…' : 'Save report' }}
+    </button>
+  </form>
+</section>

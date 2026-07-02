@@ -1,0 +1,13 @@
+<section class="page">
+  <header><p class="eyebrow">We're here to help</p><h1>Contact &amp; emergency</h1></header>
+  @if (c(); as c) {
+    <div class="grid">
+      <article class="card urgent"><span class="cl">Emergency</span><a href="tel:{{c.emergency}}">{{ c.emergency }}</a></article>
+      <article class="card urgent"><span class="cl">Ambulance</span><a href="tel:{{c.ambulance}}">{{ c.ambulance }}</a></article>
+      <article class="card"><span class="cl">Blood bank</span><a href="tel:{{c.bloodBank}}">{{ c.bloodBank }}</a></article>
+      <article class="card"><span class="cl">Board line</span><a href="tel:{{c.boardLine}}">{{ c.boardLine }}</a></article>
+      <article class="card span"><span class="cl">Hospital email</span><a href="mailto:{{c.hospitalEmail}}">{{ c.hospitalEmail }}</a></article>
+      <article class="card span"><span class="cl">Address</span><span class="addr">{{ c.address }}</span></article>
+    </div>
+  } @else { <p class="muted">Loading contact details…</p> }
+</section>

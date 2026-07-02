@@ -1,0 +1,8 @@
+.page { max-width: 760px; margin: 0 auto; padding: 2.5rem clamp(1rem,4vw,3rem); }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.72rem; color: var(--accent); margin: 0 0 0.4rem; }
+h1 { font-family: var(--font-display); font-size: 2rem; letter-spacing: -0.025em; margin: 0 0 1.5rem; }
+.list { display: flex; flex-direction: column; gap: 0.6rem; }
+.item { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.q { width: 100%; text-align: left; background: none; border: none; padding: 1rem 1.25rem; font-size: 0.95rem; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; color: var(--ink); }
+.q span { color: var(--accent-strong); font-size: 1.3rem; }
+.a { margin: 0; padding: 0 1.25rem 1rem; font-size: 0.9rem; color: var(--ink-soft); }

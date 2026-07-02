@@ -1,0 +1,83 @@
+<section class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Overview</p>
+      <h1>Welcome back<span *ngIf="userName">, {{ userName }}</span></h1>
+    </div>
+    @if (auth.isAdmin()) {
+      <a routerLink="/patients" class="btn-ghost">Manage patients →</a>
+    }
+  </header>
+
+  @if (loading()) {
+    <p class="muted">Loading dashboard…</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else {
+    <div class="stat-grid">
+      <article class="stat-card">
+        <p class="stat-label">Total patients</p>
+        <p class="stat-value">{{ total() }}</p>
+        <p class="stat-foot">Records in the registry</p>
+      </article>
+      <article class="stat-card">
+        <p class="stat-label">Age groups tracked</p>
+        <p class="stat-value">{{ ageBuckets().length }}</p>
+        <p class="stat-foot">Distribution bands</p>
+      </article>
+      <article class="stat-card">
+        <p class="stat-label">Recently added</p>
+        <p class="stat-value">{{ recent().length }}</p>
+        <p class="stat-foot">Shown below</p>
+      </article>
+      <article class="stat-card accent">
+        <p class="stat-label">Appointments</p>
+        <p class="stat-value">{{ appointmentCount() }}</p>
+        <p class="stat-foot">Booked across all doctors</p>
+      </article>
+    </div>
+
+    <div class="panels">
+      <article class="panel">
+        <h2>Age distribution</h2>
+        @if (pieSlices().length === 0) {
+          <p class="muted">No patient data to chart yet.</p>
+        } @else {
+          <div class="pie-wrap">
+            <svg viewBox="0 0 200 200" class="pie">
+              @for (s of pieSlices(); track s.label) {
+                <path [attr.d]="s.path" [attr.fill]="s.color" stroke="var(--surface)" stroke-width="1.5"></path>
+              }
+            </svg>
+            <ul class="legend">
+              @for (s of pieSlices(); track s.label) {
+                <li>
+                  <span class="dot" [style.background]="s.color"></span>
+                  <span class="leg-label">{{ s.label }}</span>
+                  <span class="leg-val">{{ s.count }} ({{ s.percent }}%)</span>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </article>
+
+      <article class="panel">
+        <h2>Recently added</h2>
+        @if (recent().length === 0) {
+          <p class="muted">No patients yet. Add one from the patients page.</p>
+        } @else {
+          <ul class="recent-list">
+            @for (p of recent(); track p.id) {
+              <li>
+                <span class="avatar">{{ p.name.charAt(0) }}</span>
+                <span class="recent-name">{{ p.name }}</span>
+                <span class="recent-email">{{ p.email }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </article>
+    </div>
+  }
+</section>

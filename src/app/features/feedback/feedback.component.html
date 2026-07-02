@@ -1,0 +1,67 @@
+<section class="page">
+  <header class="page-head"><div><p class="eyebrow">Your voice</p><h1>Patient feedback</h1></div></header>
+
+  <div class="grid">
+    <article class="panel">
+      <h2>Share your experience</h2>
+
+      @if (canSubmit) {
+        @if (done()) { <div class="toast">Thank you — your feedback has been recorded.</div> }
+        <form (ngSubmit)="submit()" #ff="ngForm" class="form">
+          <label class="field"><span>Your name</span><input name="n" [(ngModel)]="name" required /></label>
+          <div class="field">
+            <span>Rating</span>
+            <div class="rating">
+              @for (s of stars; track s) {
+                <button type="button" class="star" [class.on]="s <= rating" (click)="rating = s">★</button>
+              }
+            </div>
+          </div>
+          <label class="field"><span>Message</span>
+            <textarea name="m" [(ngModel)]="message" rows="4" placeholder="Tell us about your visit"></textarea></label>
+          <button type="submit" class="btn-primary" [disabled]="saving() || ff.invalid">
+            {{ saving() ? 'Sending…' : 'Submit feedback' }}
+          </button>
+        </form>
+      } @else if (!auth.isAuthenticated()) {
+        <div class="locked">
+          <p>Only registered patients can leave feedback.</p>
+          <div class="locked-actions">
+            <a routerLink="/register" class="btn-primary">Register</a>
+            <a routerLink="/login" class="btn-ghost">Sign in</a>
+          </div>
+        </div>
+      } @else {
+        <div class="locked">
+          <p>Feedback is submitted by patients. As {{ auth.role() }} you can view
+            @if (canDelete) { and remove } feedback in the list.</p>
+        </div>
+      }
+    </article>
+
+    <article class="panel">
+      <h2>What patients say</h2>
+      @if (loading()) { <p class="muted">Loading…</p> }
+      @else if (list().length === 0) { <p class="muted">No feedback yet.</p> }
+      @else {
+        <ul class="stories">
+          @for (f of list(); track f.id) {
+            <li>
+              <div class="story-head">
+                <span class="who">{{ f.patientName }}</span>
+                <span class="stars">{{ starString(f.rating) }}</span>
+              </div>
+              @if (f.message) { <p class="story-msg">{{ f.message }}</p> }
+              <div class="story-foot">
+                <p class="story-date">{{ f.createdAt | date:'mediumDate' }}</p>
+                @if (canDelete) {
+                  <button class="del-btn" (click)="remove(f)">Delete</button>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </article>
+  </div>
+</section>

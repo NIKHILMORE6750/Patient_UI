@@ -1,0 +1,127 @@
+.topnav {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.nav-inner {
+  max-width: 1350px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem clamp(1rem, 3vw, 2rem);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 700;
+}
+.brand-name { font-weight: 600; letter-spacing: -0.01em; }
+
+.nav-links { display: flex; gap: 0.35rem; margin-left: auto; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.nav-links a:hover { background: var(--surface-2); color: var(--ink); }
+.nav-links a.active { background: var(--accent-soft); color: var(--accent-strong); }
+
+.nav-right { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+.icon-btn {
+  background: none; border: 1px solid var(--line); border-radius: 8px;
+  width: 34px; height: 34px; cursor: pointer; font-size: 0.95rem;
+  display: grid; place-items: center; color: var(--ink);
+}
+.icon-btn:hover { border-color: var(--accent); }
+.role-tag {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--accent-strong);
+  background: var(--accent-soft); padding: 0.25rem 0.55rem; border-radius: 99px;
+}
+.signin {
+  text-decoration: none; background: var(--accent); color: #fff;
+  padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+}
+.signin:hover { background: var(--accent-strong); }
+.logout {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+.logout:hover { border-color: var(--danger); color: var(--danger); }
+
+/* Scroll to top */
+.scroll-top {
+  position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 40;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--accent); color: #fff; border: none; cursor: pointer;
+  font-size: 1.2rem; box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  display: grid; place-items: center; transition: background 0.15s;
+}
+.scroll-top:hover { background: var(--accent-strong); }
+
+/* Chatbot */
+.chat-fab {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 40;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--accent); color: #fff; cursor: pointer;
+  display: grid; place-items: center; font-size: 1.4rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+}
+.chat-fab:hover { background: var(--accent-strong); }
+.chat-panel {
+  position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 41;
+  width: min(340px, calc(100vw - 3rem)); height: 440px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 16px; box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.chat-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 1.1rem; background: var(--accent); color: #fff; font-weight: 600;
+}
+.chat-head button { background: none; border: none; color: #fff; font-size: 1.4rem; cursor: pointer; line-height: 1; }
+.chat-body { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.msg { max-width: 80%; padding: 0.6rem 0.85rem; border-radius: 12px; font-size: 0.85rem; line-height: 1.4; }
+.msg.bot { background: var(--surface-2); color: var(--ink); align-self: flex-start; border-bottom-left-radius: 3px; }
+.msg.user { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 3px; }
+.chat-input { display: flex; gap: 0.5rem; padding: 0.75rem; border-top: 1px solid var(--line); }
+.chat-input input { flex: 1; padding: 0.6rem 0.75rem; border: 1px solid var(--line); border-radius: 9px; font-size: 0.85rem; background: var(--surface); color: var(--ink); }
+.chat-input input:focus { outline: none; border-color: var(--accent); }
+.chat-input button { background: var(--accent); color: #fff; border: none; border-radius: 9px; padding: 0 1rem; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+.chat-input button:hover { background: var(--accent-strong); }
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+}
+
+
+/* Breathing room below the sticky top nav, consistent across all roles/pages */
+main { display: block; padding-top: 0.5rem; min-height: 60vh; }

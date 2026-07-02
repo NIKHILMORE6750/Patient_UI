@@ -1,0 +1,12 @@
+<section class="page">
+  <header><p class="eyebrow">Updates</p><h1>Latest news</h1></header>
+  <div class="list">
+    @for (n of items(); track n.title) {
+      <article class="card">
+        <p class="date">{{ n.date }}</p>
+        <h3>{{ n.title }}</h3>
+        <p class="sum">{{ n.summary }}</p>
+      </article>
+    }
+  </div>
+</section>

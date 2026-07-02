@@ -1,0 +1,35 @@
+<section class="page">
+  <header><p class="eyebrow">About us</p><h1>Our hospital branches</h1>
+    <p class="lede">Meridian operates multiple branches. Each lists the beds available per department.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="muted">Loading branches…</p>
+  } @else {
+    <div class="branches">
+      @for (b of branches(); track b.name) {
+        <article class="branch-card">
+          <div class="branch-head">
+            <div>
+              <h2>{{ b.name }}</h2>
+              <p class="addr">{{ b.address }}</p>
+              <p class="phone">{{ b.phone }}</p>
+            </div>
+            <div class="total">
+              <span class="total-num">{{ totalBeds(b) }}</span>
+              <span class="total-label">total beds</span>
+            </div>
+          </div>
+          <table class="bed-table">
+            <thead><tr><th>Department</th><th class="right">Beds available</th></tr></thead>
+            <tbody>
+              @for (d of b.departments; track d.department) {
+                <tr><td>{{ d.department }}</td><td class="right">{{ d.beds }}</td></tr>
+              }
+            </tbody>
+          </table>
+        </article>
+      }
+    </div>
+  }
+</section>

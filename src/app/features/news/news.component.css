@@ -1,0 +1,8 @@
+.page { max-width: 760px; margin: 0 auto; padding: 2.5rem clamp(1rem,4vw,3rem); }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.72rem; color: var(--accent); margin: 0 0 0.4rem; }
+h1 { font-family: var(--font-display); font-size: 2rem; letter-spacing: -0.025em; margin: 0 0 1.5rem; }
+.list { display: flex; flex-direction: column; gap: 1rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1.5rem; }
+.date { font-size: 0.74rem; color: var(--accent-strong); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.5rem; }
+.card h3 { margin: 0 0 0.5rem; }
+.sum { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }

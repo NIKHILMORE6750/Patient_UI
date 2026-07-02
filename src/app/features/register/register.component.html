@@ -1,0 +1,48 @@
+<div class="reg-shell">
+  <div class="reg-card">
+    <div class="brand">
+      <span class="brand-mark">+</span>
+      <span class="brand-name">Meridian</span>
+    </div>
+    <h1>Create your account</h1>
+    <p class="lede">Register as a patient or a doctor.</p>
+
+    <div class="role-toggle">
+      <button type="button" [class.active]="role === 'PATIENT'" (click)="role = 'PATIENT'">Patient</button>
+      <button type="button" [class.active]="role === 'DOCTOR'" (click)="role = 'DOCTOR'">Doctor</button>
+    </div>
+
+    <form (ngSubmit)="submit()" #f="ngForm" class="form">
+      <label class="field">
+        <span>Full name</span>
+        <input name="name" [(ngModel)]="name" required placeholder="Your name" />
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input name="email" type="email" [(ngModel)]="email" required placeholder="you@example.com" />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input name="password" type="password" [(ngModel)]="password" required minlength="4" placeholder="Choose a password" />
+      </label>
+      <label class="field">
+        <span>Country</span>
+        <select name="country" [(ngModel)]="country" required>
+          @for (c of countries; track c) { <option [value]="c">{{ c }}</option> }
+        </select>
+      </label>
+      <label class="field">
+        <span>Address</span>
+        <input name="address" [(ngModel)]="address" required placeholder="Street, city" />
+      </label>
+
+      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+
+      <button type="submit" class="btn-primary" [disabled]="loading() || f.invalid">
+        {{ loading() ? 'Creating…' : 'Create ' + (role === 'DOCTOR' ? 'doctor' : 'patient') + ' account' }}
+      </button>
+    </form>
+
+    <p class="hint">Already registered? <a routerLink="/login">Sign in</a></p>
+  </div>
+</div>

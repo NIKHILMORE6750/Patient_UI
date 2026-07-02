@@ -1,0 +1,25 @@
+.reg-shell { min-height: 100vh; display: grid; place-items: center; padding: 2rem 1rem; }
+.reg-card { width: 100%; max-width: 460px; }
+.brand { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 2rem; }
+.brand-mark { display: grid; place-items: center; width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 9px; font-weight: 700; font-size: 1.2rem; }
+.brand-name { font-weight: 600; }
+h1 { font-family: var(--font-display); font-size: 2rem; letter-spacing: -0.03em; margin: 0 0 0.4rem; }
+.lede { color: var(--ink-soft); margin: 0 0 1.5rem; }
+
+.role-toggle { display: flex; gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 1.5rem; }
+.role-toggle button { flex: 1; padding: 0.7rem; background: var(--surface); border: none; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: var(--ink-soft); }
+.role-toggle button.active { background: var(--accent); color: #fff; }
+
+.form { display: flex; flex-direction: column; gap: 1rem; }
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field span { font-size: 0.8rem; font-weight: 500; color: var(--ink-soft); }
+.field input, .field select { padding: 0.75rem 0.85rem; border: 1px solid var(--line); border-radius: 10px; font-size: 0.93rem; background: var(--surface); color: var(--ink); }
+.field input:focus, .field select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.btn-primary { margin-top: 0.4rem; padding: 0.85rem; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+.btn-primary:hover:not(:disabled) { background: var(--accent-strong); }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.error { margin: 0; padding: 0.7rem 0.85rem; background: var(--danger-soft); color: var(--danger); border-radius: 8px; font-size: 0.85rem; }
+.hint { margin-top: 1.5rem; font-size: 0.85rem; color: var(--ink-soft); text-align: center; }
+.hint a { color: var(--accent-strong); font-weight: 500; }

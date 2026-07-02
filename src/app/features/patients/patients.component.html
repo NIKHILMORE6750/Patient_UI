@@ -1,0 +1,106 @@
+<section class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Registry</p>
+      <h1>Patients</h1>
+    </div>
+    <button class="btn-primary" (click)="openAdd()">+ Add patient</button>
+  </header>
+
+  <div class="toolbar">
+    <input
+      class="search"
+      type="search"
+      placeholder="Search by name or email"
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+    />
+    <span class="count">{{ filtered().length }} shown</span>
+  </div>
+
+  @if (loading()) {
+    <p class="muted">Loading patients…</p>
+  } @else if (filtered().length === 0) {
+    <div class="empty">
+      <p>No patients match your search.</p>
+      <button class="btn-ghost" (click)="openAdd()">Add the first one</button>
+    </div>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Date of birth</th>
+            <th class="right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of filtered(); track p.id) {
+            <tr>
+              <td>
+                <span class="cell-name">
+                  <span class="avatar">{{ p.name.charAt(0) }}</span>
+                  {{ p.name }}
+                </span>
+              </td>
+              <td>{{ p.email }}</td>
+              <td class="muted-cell">{{ p.address }}</td>
+              <td>{{ p.dateOfBirth }}</td>
+              <td class="right">
+                <button class="link-btn" (click)="openEdit(p)">Edit</button>
+                <button class="link-btn danger" (click)="remove(p)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+
+@if (modalOpen()) {
+  <div class="modal-backdrop" (click)="close()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h2>{{ editingId() ? 'Edit patient' : 'Add patient' }}</h2>
+
+      <form (ngSubmit)="save()" #pf="ngForm" class="form">
+        <label class="field">
+          <span>Full name</span>
+          <input name="name" [(ngModel)]="form.name" required maxlength="100"
+                 placeholder="Jane Smith" />
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+          <input name="email" type="email" [(ngModel)]="form.email" required
+                 placeholder="jane@example.com" />
+        </label>
+
+        <label class="field">
+          <span>Address</span>
+          <input name="address" [(ngModel)]="form.address" required
+                 placeholder="42 Oak Street" />
+        </label>
+
+        <label class="field">
+          <span>Date of birth</span>
+          <input name="dob" type="date" [(ngModel)]="form.dateOfBirth" required />
+        </label>
+
+        @if (formError()) {
+          <p class="error" role="alert">{{ formError() }}</p>
+        }
+
+        <div class="modal-actions">
+          <button type="button" class="btn-ghost" (click)="close()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="saving() || pf.invalid">
+            {{ saving() ? 'Saving…' : (editingId() ? 'Save changes' : 'Create patient') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

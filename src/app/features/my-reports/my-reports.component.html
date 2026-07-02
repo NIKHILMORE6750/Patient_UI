@@ -1,0 +1,38 @@
+<section class="page">
+  <header class="page-head">
+    <div><p class="eyebrow">Your health</p><h1>My medical reports</h1></div>
+  </header>
+
+  @if (loading()) {
+    <p class="muted">Loading your reports…</p>
+  } @else if (notice()) {
+    <div class="notice">{{ notice() }}</div>
+  } @else if (reports().length === 0) {
+    <div class="empty"><p>You don't have any reports yet. After a visit, your doctor's report will appear here.</p></div>
+  } @else {
+    <div class="report-list">
+      @for (r of reports(); track r.id) {
+        <article class="report-card">
+          <div class="rc-head">
+            <div>
+              <h3>{{ r.department || 'Consultation' }} · {{ r.visitType }}</h3>
+              <p class="rc-meta">By {{ r.doctorName || 'Doctor' }} · {{ r.createdAt | date:'medium' }}</p>
+            </div>
+          </div>
+          <dl class="rc-body">
+            <div><dt>Diagnosis</dt><dd>{{ r.diagnosis || '—' }}</dd></div>
+            <div><dt>Medications</dt><dd>{{ r.medications || '—' }}</dd></div>
+            <div><dt>Follow-up</dt><dd>{{ r.followUp || '—' }}</dd></div>
+          </dl>
+          <div class="rc-actions">
+            <span class="dl-label">Download:</span>
+            <button class="chip" (click)="printPdf(r)">PDF</button>
+            <button class="chip" (click)="downloadHtml(r)">HTML</button>
+            <button class="chip" (click)="downloadDoc(r)">Word</button>
+            <button class="chip" (click)="downloadText(r)">Text</button>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
